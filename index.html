@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eid Mubarak Web Card</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Poppins&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-green-200 font-poppins">
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <div class="box absolute -z-10 top-0"></div>
+    
+    <div class="flex flex-wrap items-center justify-center ml-72 relative">
+        <div class="container max-w-3xl bg-white rounded shadow-xl m-12">
+            <div class="h-56 overflow-hidden rounded-t">
+                <img class="w-full rounded-t" src="img/2.jpg" alt="Background Eid Mubarak">
+            </div>
+            <div class="flex justify-center px-5 -mt-24 ">
+                <span class="block h-44 w-44">
+                    <img class="mx-auto object-cover  rounded-full bg-slate-400 p-1.5" src="img/1.jpg" alt="Foto Dummy">
+                </span>
+            </div>
+            <div class="px-7 mb-6">
+                <h1 class="text-5xl font-bold text-green-800 text-center font-amiri">عيد مبارك</h1>
+                <h2 class="text-4xl  mt-6 font-bold text-green-800 text-center">Eid Mubarak</h2>
+                <p class=" text-2xl italic text-gray-400  text-center mt-6">May Allah bring us joy, health, happiness, peace and prosperity on this blessed day.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ( CDN  -->
+    <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+
+    <script type="importmap">
+    {
+    "imports": {
+        "three": "https://unpkg.com/three@0.140.0/build/three.module.js",
+        "controls": "https://unpkg.com/three@0.140.0/examples/jsm/controls/OrbitControls.js",
+        "loader": "https://unpkg.com/three@0.140.0/examples/jsm/loaders/GLTFLoader.js"
+    }
+    }
+    </script>
+    <!-- CDN ) -->
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'controls';
+        import { GLTFLoader } from 'loader';
+
+        // MEMBUAT ADEGAN
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enable = false;
+        const box = document.querySelector('.box')
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        box.appendChild(renderer.domElement);
+
+        // const geometry = new THREE.BoxGeometry();
+        // // const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+        // const material = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
+        // const cube = new THREE.Mesh(geometry, material);
+        // scene.add(cube);
+
+        const loader = new GLTFLoader();
+        let ketupat;
+        loader.load('ketupat/scene.gltf', function (gltf) {
+            ketupat = gltf.scene;
+            ketupat.scale.set(0.3, 0.3, 0.3)
+            scene.add(ketupat);
+
+        })
+
+        camera.position.z = 6;
+        camera.position.y = -1;
+        camera.position.x = 6;
+        // Cahaya
+        const AmbientLight = new THREE.AmbientLight(0xffffff, 1); // soft white light
+        scene.add(AmbientLight);
+
+        const PointLight = new THREE.PointLight(0xffffff, 1, 100);
+        PointLight.position.set(50, 50, 50);
+        scene.add(PointLight);
+
+
+        // MERENDER ADEGAN
+
+        function animate() {
+            requestAnimationFrame(animate);
+            if(ketupat){
+                ketupat.rotation.y += 0.01;
+                ketupat.scale.set(1, 1, 1)
+            }
+            
+            // cube.rotation.x += 0.01;
+            // cube.rotation.z += 0.01;
+            // cube.rotation.y += 0.01;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+            //  Controls
+
+
+    </script>
+</body>
+
+</html>
